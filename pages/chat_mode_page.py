@@ -1,18 +1,26 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget
-
+from styles.colors import Colors
 
 class ChatMode():
     def __init__(self,Form):
         self.gridLayout = QtWidgets.QGridLayout(Form)
         self.gridLayout.setContentsMargins(5, 0, 5, 15)
         self.gridLayout.setObjectName("gridLayout")
+
+
+
+
+
+
         self.scrollArea = QtWidgets.QScrollArea(Form)
-        self.scrollArea.setStyleSheet("""margin: 5px 10px;
-margin-bottom: -20px;
-background-color: red;
-border: 0px solid white;""")
+        self.scrollArea.setStyleSheet("""margin: 5px 50px;
+        
+        margin-bottom: -20px;
+        background-color: #006d66;
+        border: 0px solid white;""")
         self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setSizeIncrement(QtCore.QSize(50, 50))
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 949, 493))
@@ -30,6 +38,8 @@ border: 0px solid white;""")
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
+
+
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame_2)
         self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.horizontalLayout.setContentsMargins(50, 0, 50, 0)
@@ -42,7 +52,6 @@ border: 0px solid white;""")
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setMinimumSize(QtCore.QSize(0, 0))
         self.frame.setMaximumSize(QtCore.QSize(1200, 100))
         self.frame.setSizeIncrement(QtCore.QSize(50, 50))
         self.frame.setBaseSize(QtCore.QSize(0, 0))
@@ -50,35 +59,11 @@ border: 0px solid white;""")
         brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Button, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
         self.frame.setPalette(palette)
         self.frame.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.frame.setStyleSheet("background-color: #013227;\n"
-"border-radius: 30px;\n"
-"border: 0.8px solid white;")
+        self.frame.setStyleSheet(f"background-color: {Colors.COLOR_SECONDARY};\n"
+        "border-radius: 30px;\n"
+        "border: 0.5px solid rgb(100,100,100);")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
@@ -86,39 +71,42 @@ border: 0px solid white;""")
         self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.gridLayout_2.setContentsMargins(20, 10, -1, 10)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.pushButton = QtWidgets.QPushButton(self.frame)
-        self.pushButton.setEnabled(True)
+        self.microphoneButton = QtWidgets.QPushButton(self.frame)
+        self.microphoneButton.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(50)
         sizePolicy.setVerticalStretch(50)
-        sizePolicy.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy)
-        self.pushButton.setMinimumSize(QtCore.QSize(70, 70))
-        self.pushButton.setSizeIncrement(QtCore.QSize(60, 60))
-        self.pushButton.setBaseSize(QtCore.QSize(60, 60))
-        self.pushButton.setStyleSheet("""QPushButton{
+        sizePolicy.setHeightForWidth(self.microphoneButton.sizePolicy().hasHeightForWidth())
+        self.microphoneButton.setSizePolicy(sizePolicy)
+        self.microphoneButton.setMinimumSize(QtCore.QSize(70, 70))
+        self.microphoneButton.setSizeIncrement(QtCore.QSize(60, 60))
+        self.microphoneButton.setStyleSheet("""QPushButton{
 border-radius: 30px;
 border: none;
 padding: 10px;
 width: 50px;
-image: url(Assets/microphone-primary.svg); 
+image: url(assets/microphone-primary.svg); 
 }
 QPushButton:hover{
-image: url(Assets/microphone-secondary.svg); 
+image: url(assets/microphone-secondary.svg); 
 }
 
 """)
-        self.pushButton.setText("")
-        self.pushButton.setFlat(False)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout_2.addWidget(self.pushButton, 0, 0, 1, 1)
+        self.microphoneButton.setText("")
+        self.microphoneButton.setFlat(False)
+        self.microphoneButton.setObjectName("pushButton")
+        self.gridLayout_2.addWidget(self.microphoneButton, 0, 0, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem, 0, 1, 1, 1)
         self.plainTextEdit = QtWidgets.QPlainTextEdit(self.frame)
         self.plainTextEdit.setMinimumSize(QtCore.QSize(400, 60))
-        self.plainTextEdit.setStyleSheet("color: white; \n"
-"font-size: 20px;\n"
-"padding: 20px 10px;")
+        self.plainTextEdit.setStyleSheet(f"""color: white; 
+        font-size: 20px;
+        padding: 20px 10px;
+        border: 0px;
+        border-radius: 30px;
+        background-color:{Colors.COLOR_DARK};
+        place-holder""")
         self.plainTextEdit.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.plainTextEdit.setReadOnly(False)
         self.plainTextEdit.setOverwriteMode(False)
@@ -126,26 +114,26 @@ image: url(Assets/microphone-secondary.svg);
         self.plainTextEdit.setBackgroundVisible(False)
         self.plainTextEdit.setObjectName("plainTextEdit")
         self.gridLayout_2.addWidget(self.plainTextEdit, 0, 2, 1, 1)
-        self.pushButton_2 = QtWidgets.QPushButton(self.frame)
+        self.sendButton = QtWidgets.QPushButton(self.frame)
+        self.plainTextEdit.setPlaceholderText("Mesajınızı iletin...")
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_2.sizePolicy().hasHeightForWidth())
-        self.pushButton_2.setSizePolicy(sizePolicy)
-        self.pushButton_2.setMinimumSize(QtCore.QSize(70, 70))
-        self.pushButton_2.setStyleSheet("""QPushButton{
-border-radius: 30px;
-border: none;
-padding: 10px;
-width: 50px;
-image: url(Assets/paper-plane-primary.svg); 
-}
-QPushButton:hover{
-image: url(Assets/paper-plane-secondary.svg); 
-}""")
-        self.pushButton_2.setText("")
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout_2.addWidget(self.pushButton_2, 0, 3, 1, 1)
+        sizePolicy.setHeightForWidth(self.sendButton.sizePolicy().hasHeightForWidth())
+        self.sendButton.setSizePolicy(sizePolicy)
+        self.sendButton.setMinimumSize(QtCore.QSize(70, 70))
+        self.sendButton.setStyleSheet("""QPushButton{
+        padding: 10px;
+        width: 50px;
+        border: 0px;
+        image: url(assets/paper-plane-primary.svg); 
+        }
+        QPushButton:hover{
+        image: url(assets/paper-plane-secondary.svg); 
+        }""")
+        self.sendButton.setText("")
+        self.sendButton.setObjectName("pushButton_2")
+        self.gridLayout_2.addWidget(self.sendButton, 0, 3, 1, 1)
         self.horizontalLayout.addWidget(self.frame)
         self.gridLayout.addWidget(self.frame_2, 1, 0, 1, 1)
         self.gridLayout.setRowStretch(0, 12)
