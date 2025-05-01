@@ -1,5 +1,7 @@
-class Colors():
-    COLOR_PRIMARY = "#013220"
-    COLOR_SECONDARY = "#013227"
-    COLOR_DARK = "#01231c"
-    COLOR_LIGTH = "#c1fff1"
+class Colors:
+    Color_Blue = "#0040C1"       # Dark Blue
+    Color_Dark = "#202123"     # Very Dark Gray
+    Color_MidDark="#212121"
+    Color_Gray = "#303030"
+    Color_Light = "#F0F0F0"
+    COLOR_White = "#FCFCFC"         # White
