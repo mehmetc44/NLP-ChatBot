@@ -1,6 +1,4 @@
 from PyQt5.QtCore import QThread
-from PyQt5.QtWidgets import QVBoxLayout
-
 from src.gui.pages.ChatMode import ChatWidget
 from src.gui.pages.CameraMode import CameraWidget
 from src.gui.widgets.MessageBoxes import *
@@ -78,7 +76,6 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.frame)
         MainWindow.setCentralWidget(self.centralwidget)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        # Ana layout: Tüm bileşenleri tutan grid layout
         self.gridLayout = QtWidgets.QGridLayout(self.frame_2)
         self.gridLayout.setContentsMargins(5, 0, 5, 15)  # Dış boşluklar (sol, üst, sağ, alt)
         self.gridLayout.setObjectName("gridLayout")

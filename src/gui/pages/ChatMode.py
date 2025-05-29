@@ -6,12 +6,10 @@ from src.gui.widgets.MessageBoxes import *
 
 class ChatWidget(QWidget):
     def __init__(self):
-        super().__init__(self)
-        # Ana layout: Tüm bileşenleri tutan grid layout
+        super().__init__()
         self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setContentsMargins(5, 0, 5, 15)  # Dış boşluklar (sol, üst, sağ, alt)
         self.gridLayout.setObjectName("gridLayout")
-        # Scroll alanı
         self.scrollArea = QtWidgets.QScrollArea()
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
@@ -49,7 +47,6 @@ class ChatWidget(QWidget):
         }
         """
         self.scrollArea.verticalScrollBar().setStyleSheet(scrollbar_style)
-        # frame_2: Alt kısımdaki mesaj gönderme panelini kapsayan çerçeve
         self.frame_2 = QtWidgets.QFrame()
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(50)
@@ -59,22 +56,16 @@ class ChatWidget(QWidget):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
-
-
         self.gridLayout.addWidget(self.frame_2)
-
-        # frame_2'nin içine yatay layout ekleniyor
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame_2)
-        self.horizontalLayout.setContentsMargins(50, 0, 50, 0)  # İç kenar boşlukları
+        self.horizontalLayout.setContentsMargins(50, 0, 50, 0)
         self.horizontalLayout.setSpacing(1)
-        # Alt mesaj gönderme kutusunu içeren asıl çerçeve
         self.frame = QtWidgets.QFrame(self.frame_2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         self.frame.setSizePolicy(sizePolicy)
-        self.frame.setMaximumSize(QtCore.QSize(1200, 100))  # Genişlik en fazla 1200
+        self.frame.setMaximumSize(QtCore.QSize(1200, 100))
         self.frame.setSizeIncrement(QtCore.QSize(50, 50))
         self.frame.setBaseSize(QtCore.QSize(0, 0))
-        # Arka plan rengi ve stil tanımlamaları
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(1, 35, 28))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -85,13 +76,9 @@ class ChatWidget(QWidget):
                                  "border: 0.5px solid rgb(100,100,100);")
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-
-        # frame içine grid layout ekleniyor
         self.gridLayout_2 = QtWidgets.QGridLayout(self.frame)
         self.gridLayout_2.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
         self.gridLayout_2.setContentsMargins(20, 10, -1, 10)
-
-        # Mikrofon butonu (sol baştaki)
         self.microphoneButton = QtWidgets.QPushButton(self.frame)
         self.microphoneButton.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -113,11 +100,9 @@ class ChatWidget(QWidget):
         self.microphoneButton.setText("")
         self.microphoneButton.setObjectName("pushButton")
         self.gridLayout_2.addWidget(self.microphoneButton, 0, 0, 1, 1)
-
-        # Mikrofon ile input arasında boşluk
         spacerItem = QtWidgets.QSpacerItem(10, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem, 0, 1, 1, 1)
-        # Mesaj girdi alanı (kullanıcının yazı yazdığı yer)
+
         self.inputLine = QLineEdit()
         self.inputLine.setMinimumSize(QtCore.QSize(400, 60))
         self.inputLine.setStyleSheet(f"""color: white; 
@@ -127,10 +112,9 @@ class ChatWidget(QWidget):
                     border-radius: 30px;
                     background-color: {Colors.Color_Dark};
                     place-holder""")
-        self.inputLine.setPlaceholderText("Mesajınızı iletin...")  # Placeholder metni
+        self.inputLine.setPlaceholderText("Mesajınızı iletin...")
         self.inputLine.setObjectName("plainTextEdit")
         self.gridLayout_2.addWidget(self.inputLine, 0, 2, 1, 1)
-        # Gönder butonu (input'ın sağında)
         self.sendButton = QtWidgets.QPushButton(self.frame)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         self.sendButton.setSizePolicy(sizePolicy)

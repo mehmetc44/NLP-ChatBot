@@ -1,33 +1,22 @@
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import QTimer
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
-
 import cv2
 
 class CameraWidget(QWidget):
     def __init__(self):
         super().__init__()
-
-        # Kamera başlatılmaz, sadece tanımlanır
         self.cap = None
-
-        # Kamera görüntüsünün gösterileceği QLabel
         self.label = QLabel("Kamera başlatılmadı", self)
         self.label.setAlignment(Qt.AlignCenter)
         self.label.setStyleSheet("background-color: black; color: white; font-size: 18px;")
-
-        # Timer tanımı
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
 
         self.blank_label = QLabel()
         self.blank_label.setStyleSheet("background-color: white;")
         self.blank_label.setAlignment(Qt.AlignCenter)
-
-
-        # Layout
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         self.setLayout(layout)
@@ -45,8 +34,8 @@ class CameraWidget(QWidget):
             self.timer.stop()
             self.cap.release()
             self.cap = None
-        self.label.setText("Kamera durduruldu")
-        self.label.setPixmap(QPixmap())  # Boşalt
+        self.label.setText("Camera stopped")
+        self.label.setPixmap(QPixmap())
 
     def update_frame(self):
         ret, frame = self.cap.read()
