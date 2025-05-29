@@ -4,11 +4,11 @@ from src.gui.styles.colors import Colors
 from PyQt5.QtCore import Qt
 from src.gui.widgets.MessageBoxes import *
 
-class ChatMode(QWidget):
-    def __init__(self, Form):
-        super().__init__()
+class ChatWidget(QWidget):
+    def __init__(self):
+        super().__init__(self)
         # Ana layout: Tüm bileşenleri tutan grid layout
-        self.gridLayout = QtWidgets.QGridLayout(Form)
+        self.gridLayout = QtWidgets.QGridLayout(self)
         self.gridLayout.setContentsMargins(5, 0, 5, 15)  # Dış boşluklar (sol, üst, sağ, alt)
         self.gridLayout.setObjectName("gridLayout")
         # Scroll alanı
@@ -50,7 +50,7 @@ class ChatMode(QWidget):
         """
         self.scrollArea.verticalScrollBar().setStyleSheet(scrollbar_style)
         # frame_2: Alt kısımdaki mesaj gönderme panelini kapsayan çerçeve
-        self.frame_2 = QtWidgets.QFrame(Form)
+        self.frame_2 = QtWidgets.QFrame()
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(50)
         self.frame_2.setSizePolicy(sizePolicy)
@@ -59,6 +59,10 @@ class ChatMode(QWidget):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
+
+
+        self.gridLayout.addWidget(self.frame_2)
+
         # frame_2'nin içine yatay layout ekleniyor
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.frame_2)
         self.horizontalLayout.setContentsMargins(50, 0, 50, 0)  # İç kenar boşlukları
@@ -145,38 +149,26 @@ class ChatMode(QWidget):
         self.sendButton.setObjectName("pushButton_2")
         self.gridLayout_2.addWidget(self.sendButton, 0, 3, 1, 1)
 
-        # Tüm input bileşenlerini (mikrofon, yazı alanı, gönder butonu) yatay layout'a ekliyoruz
         self.horizontalLayout.addWidget(self.frame)
 
-        # Üst kısımdaki scroll alanına daha fazla yer verilmesi için rowStretch ayarlanıyor
         self.gridLayout.setRowStretch(0, 12)
 
-        # Alt input panelini (frame_2) ana layout'a ekliyoruz
         self.gridLayout.addWidget(self.frame_2, 1, 0, 1, 1)
 
-        # Butona tıklama ve enter basma olayları
         self.sendButton.clicked.connect(self.sendMessage)
         self.inputLine.returnPressed.connect(self.sendMessage)
 
-        self.addMessage(SendMessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. Basılı veya el yazması parça."""))
+        self.addMessage(ReceiveMessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. Basılı veya el yazması parça."""))
 
     def addMessage(self, msg_box):
         self.scrollLayout.addWidget(msg_box)
-        # Scroll'u en alta kaydır
-        QtCore.QTimer.singleShot(0, lambda: self.scrollArea.verticalScrollBar().setValue(
+        QtCore.QTimer.singleShot(50, lambda: self.scrollArea.verticalScrollBar().setValue(
             self.scrollArea.verticalScrollBar().maximum()))
 
     def sendMessage(self):
         text = self.inputLine.text().strip()
         if text:
             self.inputLine.clear()
-            self.addMessage(ReceiveMessageBox(text))
+            self.addMessage(SendMessageBox(text))
 
-    def resizeEvent(self, event):
-        """Ekran boyutu değiştikçe mesaj kutularını yeniden düzenle"""
-        new_width = self.width()
-        for i in range(self.scrollLayout.count()):
-            widget = self.scrollLayout.itemAt(i).widget()
-            if isinstance(widget, MessageBox):
-                widget.bubble.setMaximumWidth(int(new_width * 0.7))  # %70 genişlik
-        return super().resizeEvent(event)
+

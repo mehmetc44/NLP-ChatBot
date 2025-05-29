@@ -1,8 +1,12 @@
-from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QThread
+from PyQt5.QtWidgets import QVBoxLayout
 
-from src.gui.pages.ChatMode import ChatMode
+from src.gui.pages.ChatMode import ChatWidget
+from src.gui.pages.CameraMode import CameraWidget
 from src.gui.widgets.MessageBoxes import *
 from src.gui.styles.colors import Colors
+import src.stt.SpeechToText as stt
+from src.stt.SpeechToText import SpeechWorker
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -36,7 +40,6 @@ class Ui_MainWindow(object):
         self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_3.setObjectName("frame_3")
 
-        self.chatMode = ChatMode(self.frame_2)
 
         self.comboBox = QtWidgets.QComboBox(self.frame_3)
         self.comboBox.setGeometry(QtCore.QRect(10, 10, 201, 41))
@@ -66,8 +69,8 @@ class Ui_MainWindow(object):
                width: 30px;
             }}""")
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("CHAT MODE")
-        self.comboBox.addItem("VIDEO MODE")
+        self.comboBox.addItem("Chat Mode")
+        self.comboBox.addItem("Camera Mode")
         self.gridLayout.addWidget(self.frame_3, 0, 0, 1, 1)
         self.gridLayout.setRowMinimumHeight(0, 75)
         self.gridLayout.setRowStretch(0, 1)
@@ -75,6 +78,82 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.frame)
         MainWindow.setCentralWidget(self.centralwidget)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        # Ana layout: Tüm bileşenleri tutan grid layout
+        self.gridLayout = QtWidgets.QGridLayout(self.frame_2)
+        self.gridLayout.setContentsMargins(5, 0, 5, 15)  # Dış boşluklar (sol, üst, sağ, alt)
+        self.gridLayout.setObjectName("gridLayout")
+
+        self.camera_widget = CameraWidget()
+        self.camera_widget.hide()
+        self.chatMode = ChatWidget()
+        self.gridLayout.addWidget(self.camera_widget)
+        self.gridLayout.addWidget(self.chatMode)
+        self.chatMode.microphoneButton.clicked.connect(self.captureSpeechInput)
+        self.comboBox.currentIndexChanged.connect(self.change_mode)
+
+    def change_mode(self, index):
+        if self.comboBox.currentText() == "Camera Mode":
+            self.chatMode.hide()
+            self.camera_widget.show()
+            self.camera_widget.start_camera()
+        else:
+            self.camera_widget.stop_camera()
+            self.camera_widget.hide()
+            self.chatMode.show()
+
+    def closeEvent(self, event):
+        self.camera_widget.stop_camera()
+        event.accept()
+
+
+    def microphoneActive(self):
+        self.chatMode.microphoneButton.setStyleSheet("""
+                    QPushButton{
+                        padding: 10px;
+                        width: 50px;
+                        border: 0px;
+                        image: url(data/assets/microphone-red.svg); 
+                    }""")
+    def microphoneDisactive(self):
+        self.chatMode.microphoneButton.setStyleSheet("""
+                            QPushButton{
+                                padding: 10px;
+                                width: 50px;
+                                border: 0px;
+                                image: url(data/assets/microphone-primary.svg); 
+                            }
+                            QPushButton:hover{
+                                image: url(data/assets/microphone-secondary.svg); 
+                            }""")
+    def toText(self):
+        text = stt.toText()
+        self.chatMode.inputLine.setText("")
+        self.chatMode.inputLine.setText(text)
+
+    def captureSpeechInput(self):
+        self.microphoneActive()
+        self.thread = QThread()
+        self.worker = SpeechWorker()
+        self.worker.moveToThread(self.thread)
+
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.onSpeechRecognized)
+        self.worker.error.connect(self.onSpeechError)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+
+        self.thread.start()
+
+    def onSpeechRecognized(self, text):
+        self.chatMode.inputLine.setText(text)
+        self.microphoneDisactive()
+
+    def onSpeechError(self, message):
+        print(message)
+        self.chatMode.inputLine.setText("")
+        self.microphoneDisactive()
+
 
 class UI:
     def __init__(self):

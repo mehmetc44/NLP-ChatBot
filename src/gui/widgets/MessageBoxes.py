@@ -24,49 +24,52 @@ class MessageBox(QtWidgets.QWidget):
         self.spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
 
         self.setStyleSheet("font-size: 20px;")
-        self.setMessage(text)
 
+        self._min_width = 200
+        self._min_height = 60
+        self.setMinimumSize(self._min_width, self._min_height)
+
+        # İlk boyutlandırma için force update
+        QtCore.QTimer.singleShot(0, lambda: self.adjustLabelSize(parent_width=self.width()))
+        self.setMessage(text)
     def setMessage(self, message):
         self.label.setText(message)
         self.adjustLabelSize()
 
     def adjustLabelSize(self, max_width=None, parent_width=None):
-        # Eğer parent_width verilmişse, max_width'yi hesapla
-        if parent_width is not None:
-            margin = 120  # Total side margins
-            max_width = max(200, parent_width - margin)
+        # Margin hesaplaması için güvenli kontrol
+        effective_parent_width = parent_width if parent_width is not None else self.width()
+        margin = 120 if effective_parent_width > 400 else 60
 
+        # Maksimum genişlik hesaplama
+        calculated_max_width = max(self._min_width, effective_parent_width - margin)
+        max_width = calculated_max_width if max_width is None else min(max_width, calculated_max_width)
+
+        # Metin genişliği hesaplama
+        font_metrics = QtGui.QFontMetrics(self.label.font())
+        text_width = font_metrics.horizontalAdvance(self.label.text()) + 60
+
+        # Label genişliğini ayarla
         if max_width:
-            # Metnin gerçek genişliğini hesapla
-            font_metrics = QtGui.QFontMetrics(self.label.font())
-            text_width = font_metrics.horizontalAdvance(self.label.text()) + 60  # Padding dahil
-
-            # Kısa mesajlar için optimize
-            if text_width < 300:
-                self.label.setMaximumWidth(text_width)
-            else:
-                self.label.setMaximumWidth(max_width)
+            self.label.setMaximumWidth(min(text_width, max_width) if text_width < 300 else max_width)
         else:
-            self.label.setMaximumWidth(16777215)  # Qt'nin maksimum değeri
+            self.label.setMaximumWidth(16777215)
 
-        # Orijinal yükseklik hesaplama
-        self.label.adjustSize()
+        # Yükseklik hesaplaması
         doc = QtGui.QTextDocument()
         doc.setDefaultFont(self.label.font())
         doc.setPlainText(self.label.text())
         doc.setTextWidth(self.label.width() - 30)
-        height = doc.size().height() + 40
-        min_height = 60
-        self.setFixedHeight(max(int(height), min_height))
+        self.setFixedHeight(max(int(doc.size().height() + 40), self._min_height))
 
     def updateMaxWidth(self, parent_width):
-        margin = 120  # Total side margins
-        max_width = max(200, parent_width - margin)
+        max_width = max(200, parent_width)
         self.adjustLabelSize(max_width)
 
     def resizeEvent(self, event):
         self.updateMaxWidth(event.size().width())
         super().resizeEvent(event)
+
 class SendMessageBox(MessageBox):
     def __init__(self, text):
         super().__init__(text)

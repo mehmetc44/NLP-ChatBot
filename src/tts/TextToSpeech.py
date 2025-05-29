@@ -12,4 +12,4 @@ def speak(text):
     playaudio(file)
     os.remove(file)
 
-speak("Herkese merhabalar bu chatbot projemizin gTTs kütüphanesi kullanılarak oluşturulmuş seslendirme kısmıdır.")
+speak("Selamlar ben chatbot")
