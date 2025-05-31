@@ -1,0 +1,14 @@
+{
+  "0": "affirm",
+  "1": "bot_challenge",
+  "2": "country_info",
+  "3": "date_info",
+  "4": "deny",
+  "5": "find_continent",
+  "6": "find_the_weather_forecast",
+  "7": "goodbye",
+  "8": "greet",
+  "9": "mood_great",
+  "10": "mood_unhappy",
+  "11": "thanks"
+}

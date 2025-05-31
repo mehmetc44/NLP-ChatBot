@@ -1,0 +1,61 @@
+version: "3.1"
+
+stories:
+
+- story: happy path
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_great
+  - action: utter_happy
+
+- story: sad path 1
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+
+- story: sad path 2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: mood_unhappy
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_goodbye
+
+
+- story: user asks for continent with country info
+  steps:
+  - intent: find_continent
+  - action: utter_ask_country_info
+  - intent: country_info
+    entities:
+      - country: Germany
+  - action: utter_finding_continent
+  - action: action_find_continent_api
+  - intent: thanks
+  - action: utter_you_are_welcome
+
+- story: user asks for the weather
+  steps:
+  - intent: find_the_weather_forecast
+  - action: utter_ask_city
+  - intent: city_info
+    entities:
+      - city: Brugge
+  - action: utter_ask_date
+  - intent: date_info
+    entities:
+      - date: 7th of May
+      - date: 2025-03-03
+  - action: utter_finding_weather
+  - action: action_find_weather
+  - intent: thanks
+  - action: utter_you_are_welcome
+

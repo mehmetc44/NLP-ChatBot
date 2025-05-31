@@ -1,0 +1,69 @@
+{
+  "type": "MaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "affirm": 0,
+        "back": 1,
+        "bot_challenge": 2,
+        "country_info": 3,
+        "deny": 4,
+        "find_continent": 5,
+        "goodbye": 6,
+        "greet": 7,
+        "mood_great": 8,
+        "mood_unhappy": 9,
+        "nlu_fallback": 10,
+        "out_of_scope": 11,
+        "restart": 12,
+        "session_start": 13,
+        "thanks": 14,
+        "trip_reservation": 15
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "action_find_continent_api": 13,
+        "action_hello_world": 14,
+        "utter_ask_city": 15,
+        "utter_ask_country_info": 16,
+        "utter_ask_date": 17,
+        "utter_cheer_up": 18,
+        "utter_confirmation_reservation": 19,
+        "utter_did_that_help": 20,
+        "utter_finding_continent": 21,
+        "utter_goodbye": 22,
+        "utter_greet": 23,
+        "utter_happy": 24,
+        "utter_iamabot": 25,
+        "utter_you_are_welcome": 26
+      },
+      "entities": {
+        "city": 0,
+        "country": 1,
+        "date": 2
+      },
+      "slots": {
+        "city_0": 0,
+        "date_0": 1,
+        "country_0": 2
+      },
+      "active_loop": {}
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

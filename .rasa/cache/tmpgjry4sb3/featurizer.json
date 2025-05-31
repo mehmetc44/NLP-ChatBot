@@ -1,0 +1,73 @@
+{
+  "type": "IntentMaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "affirm": 0,
+        "back": 1,
+        "bot_challenge": 2,
+        "city_info": 3,
+        "country_info": 4,
+        "date_info": 5,
+        "deny": 6,
+        "find_continent": 7,
+        "find_the_weather_forecast": 8,
+        "goodbye": 9,
+        "greet": 10,
+        "mood_great": 11,
+        "mood_unhappy": 12,
+        "nlu_fallback": 13,
+        "out_of_scope": 14,
+        "restart": 15,
+        "session_start": 16,
+        "thanks": 17
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "action_find_continent_api": 13,
+        "action_hello_world": 14,
+        "action_find_weather": 15,
+        "utter_ask_city": 16,
+        "utter_ask_country_info": 17,
+        "utter_ask_date": 18,
+        "utter_cheer_up": 19,
+        "utter_did_that_help": 20,
+        "utter_finding_continent": 21,
+        "utter_finding_weather": 22,
+        "utter_goodbye": 23,
+        "utter_greet": 24,
+        "utter_happy": 25,
+        "utter_iamabot": 26,
+        "utter_you_are_welcome": 27
+      },
+      "entities": {
+        "city": 0,
+        "country": 1,
+        "date": 2
+      },
+      "slots": {
+        "city_0": 0,
+        "date_0": 1,
+        "country_0": 2,
+        "continent_0": 3
+      },
+      "active_loop": {}
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

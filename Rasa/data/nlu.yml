@@ -1,0 +1,165 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+
+- intent: affirm
+  examples: |
+    - yes
+    - y
+    - indeed
+    - of course
+    - that sounds good
+    - correct
+
+- intent: deny
+  examples: |
+    - no
+    - n
+    - never
+    - I don't think so
+    - don't like that
+    - no way
+    - not really
+
+- intent: mood_great
+  examples: |
+    -very good
+    -good
+    - perfect
+    - great
+    - amazing
+    - feeling like a king
+    - wonderful
+    - I am feeling very good
+    - I am great
+    - I am amazing
+    - I am going to save the world
+    - super stoked
+    - extremely good
+    - so so perfect
+    - so good
+    - so perfect
+
+- intent: mood_unhappy
+  examples: |
+    - my day was horrible
+    - I am sad
+    - I don't feel very well
+    - I am disappointed
+    - super sad
+    - I'm so sad
+    - sad
+    - very sad
+    - unhappy
+    - not good
+    - not very good
+    - extremly sad
+    - so saad
+    - so sad
+    - bad
+    - so bad 
+
+- intent: bot_challenge
+  examples: |
+    - are you a bot?
+    - are you a human?
+    - am I talking to a bot?
+    - am I talking to a human?
+
+- intent: find_continent
+  examples: |
+    - Which continent is [France](country) in?
+    - What continent does [Brazil](country) belong to?
+    - Tell me the continent of [Japan](country).
+    - In which continent is [Canada](country)?
+    - Which continent is [India](country) located in?
+    - Where is [Australia](country) on the continent map?
+    - Can you tell me the continent for [Germany](country)?
+    - What continent does [South Africa](country) lie in?
+    - [Italy](country) is in which continent?
+    - I'd like to know the continent of [Mexico](country).
+
+- intent: country_info
+  examples: |
+    -[Italy](country)
+    -[Brazil](country)
+    -[South Africa](country)
+    -[Canada](country)
+    -[China](country)
+    -[Netherlands](country)
+
+
+- intent: country_info
+  examples: |
+    -[Rome](city)
+    -[Sao Paulo](city)
+    -[Buenos Aires](city)
+    -[New York](city)
+    -[Würzburg](city)
+    -[Eindhoven](city)
+
+- intent : date_info
+  examples: |
+    -[1st of April](date)
+    -[15th of August](date)
+    -[7th of June](date)
+    -[2025-10-05](date)
+    -[2004-07-31](date)
+    -[1980-08-10](date)
+
+
+
+- intent: thanks
+  examples: |
+    -thank you
+    -thank you very much
+    -thanks
+    -thanks a lot
+    -great,thank you
+
+    
+
+- intent: find_the_weather_forecast
+  examples: | 
+    - How is the weather like in [London](city) on [17th of May](city)
+    - tell me the weather of [Rome](city) on [2025-06-05](date)
+    - Could you tell me the weather of [Berlin](city) on [2025-07-05](date)
+    - Can you tell me the weather of [Amsterdam](city) on [2025-10-05](date)
+    - I would like to know the weather of [Namur](city) on [3rd of June]
+    - I'd like to know the weather of [Bologna](city) on [31st of July]
+    - I want to know the weather of [Nice](city) on [20th of september]
+    
+
+- intent: ask_openai
+  examples: |
+    - can you help me?
+    - I want to ask something to ChatGPT
+    - get info from OpenAI
