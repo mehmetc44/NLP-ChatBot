@@ -54,7 +54,7 @@ slots:
         entity: user_question
 
 actions:
-  - action_find_continent_api
+  - action_find_continent
   - action_hello_world
   - action_find_weather
   - action_openai_response

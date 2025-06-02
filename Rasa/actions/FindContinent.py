@@ -1,49 +1,27 @@
-import requests
-from typing import Any, Text, Dict, List
-from rasa_sdk import Action, Tracker
-from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+import sqlite3
+from rasa_sdk import Action
 
 
+class ActionFindContinent(Action):
+    def name(self):
+        return "action_find_continent"
 
-
-class ActionFindContinentAPI(Action):
-    def name(self) -> Text:
-        return "action_find_continent_api"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-
+    def run(self, dispatcher, tracker, domain):
         country = tracker.get_slot("country")
 
-        if not country:
-            dispatcher.utter_message(text="I did not get What country you meant")
-            return []
+        conn = sqlite3.connect("data/ContinentOfCountries.db")
+        cursor = conn.cursor()
 
+        country = country.strip().capitalize()
 
-        try:
-            url = f"https://restcountries.com/v3.1/name/{country}"
-            response = requests.get(url)
+        cursor.execute("SELECT continent FROM country_continent WHERE LOWER(country) = LOWER(?)", (country,))
+        result = cursor.fetchone()
 
-            if response.status_code != 200:
-                dispatcher.utter_message(text="I could not find the country. please try again")
-                return []
+        conn.close()
 
-            data = response.json()
+        if result:
+            dispatcher.utter_message(text=f"The country of {country} : {result[0]}")
+        else:
+            dispatcher.utter_message(text=f"I could not find a continent information for {country} ")
 
-            if isinstance(data, list) and len(data) > 0:
-                region = data[0].get("region", "Bilinmiyor")
-                subregion = data[0].get("subregion", "Bilinmiyor")
-                dispatcher.utter_message(
-                    text=f"{country.capitalize()} is in the continent of {region} , it is in the part of {subregion} ."
-                )
-                return [SlotSet("continent", region)]
-            else:
-                dispatcher.utter_message(text="Cevap boş döndü. Ülke adı geçerli mi?")
-                return []
-
-        except Exception as e:
-            dispatcher.utter_message(text=f"API çağrısı sırasında hata oluştu: {e}")
-            return []
+        return []

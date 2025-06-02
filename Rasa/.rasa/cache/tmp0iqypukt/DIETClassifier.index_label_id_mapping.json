@@ -1,0 +1,15 @@
+{
+  "0": "affirm",
+  "1": "ask_openai",
+  "2": "bot_challenge",
+  "3": "country_info",
+  "4": "date_info",
+  "5": "deny",
+  "6": "find_continent",
+  "7": "find_the_weather_forecast",
+  "8": "goodbye",
+  "9": "greet",
+  "10": "mood_great",
+  "11": "mood_unhappy",
+  "12": "thanks"
+}

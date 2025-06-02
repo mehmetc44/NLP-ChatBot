@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QHBoxLayout,
                              QLabel, QFrame, QPushButton, QLineEdit, QScrollArea, QSizePolicy)
-from PyQt5.QtCore import Qt, QSize, QTimer
+from PyQt5.QtCore import Qt, QSize, QTimer, QThread, pyqtSignal
 from PyQt5.QtGui import QColor
 
 from PyQt5.QtCore import QSize, Qt, QRectF

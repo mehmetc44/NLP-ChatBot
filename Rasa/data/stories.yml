@@ -38,7 +38,7 @@ stories:
     entities:
       - country: Germany
   - action: utter_finding_continent
-  - action: action_find_continent_api
+  - action: action_find_continent
   - intent: thanks
   - action: utter_you_are_welcome
 
