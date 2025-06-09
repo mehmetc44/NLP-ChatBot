@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QLineEdit
+
+import utils.config
 from src.gui.styles.colors import Colors
 from PyQt5.QtCore import Qt
 from src.gui.widgets.MessageBoxes import *
@@ -142,7 +144,10 @@ class ChatWidget(QWidget):
         self.sendButton.clicked.connect(self.sendMessage)
         self.inputLine.returnPressed.connect(self.sendMessage)
 
-        self.addMessage(ReceiveMessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. Basılı veya el yazması parça."""))
+        self.addMessage(MessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 
+        'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" 
+        sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. 
+        Basılı veya el yazması parça.""","User"))
 
     def addMessage(self, msg_box):
         self.scrollLayout.addWidget(msg_box)
