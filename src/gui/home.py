@@ -86,17 +86,30 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.camera_widget)
         self.gridLayout.addWidget(self.chatMode)
         self.chatMode.microphoneButton.clicked.connect(self.captureSpeechInput)
+        self.camera_widget.mic_button.clicked.connect(self.captureSpeechInput)
         self.comboBox.currentIndexChanged.connect(self.change_mode)
+
+
+
+    def toCameraMode(self):
+        self.chatMode.hide()
+        self.camera_widget.show()
+        self.camera_widget.start_camera()
+
+
+    def toChatMode(self):
+        self.camera_widget.stop_camera()
+        self.camera_widget.hide()
+        self.chatMode.show()
+        self.speech_worker.stop()
+        self.speech_thread.quit()
+        self.speech_thread.wait()
 
     def change_mode(self, index):
         if self.comboBox.currentText() == "Camera Mode":
-            self.chatMode.hide()
-            self.camera_widget.show()
-            self.camera_widget.start_camera()
+            self.toCameraMode()
         else:
-            self.camera_widget.stop_camera()
-            self.camera_widget.hide()
-            self.chatMode.show()
+            self.toChatMode()
 
     def closeEvent(self, event):
         self.camera_widget.stop_camera()
@@ -132,14 +145,12 @@ class Ui_MainWindow(object):
         self.thread = QThread()
         self.worker = SpeechWorker()
         self.worker.moveToThread(self.thread)
-
         self.thread.started.connect(self.worker.run)
         self.worker.finished.connect(self.onSpeechRecognized)
         self.worker.error.connect(self.onSpeechError)
         self.worker.finished.connect(self.thread.quit)
         self.worker.finished.connect(self.worker.deleteLater)
         self.thread.finished.connect(self.thread.deleteLater)
-
         self.thread.start()
 
     def onSpeechRecognized(self, text):
