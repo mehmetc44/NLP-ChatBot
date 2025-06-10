@@ -13,9 +13,19 @@ nlu:
     - hey there
     - let's go
     - hey dude
-    - goodmorning
-    - goodevening
+    - good morning
+    - good evening
     - good afternoon
+
+- intent: ask_how_are_you
+  examples: | 
+    - How are you?
+    - How about you?
+    - How are you doing today? 
+    - What about you?
+    - How's it going?
+    - How ya doin'?
+
 
 - intent: goodbye
   examples: |
@@ -28,6 +38,7 @@ nlu:
     - have a nice day
     - see you around
     - bye bye
+    - see you
     - see you later
 
 - intent: affirm
@@ -38,6 +49,10 @@ nlu:
     - of course
     - that sounds good
     - correct
+    - sure thing
+    - absolutely
+    - that works
+    - sounds good
 
 - intent: deny
   examples: |
@@ -93,6 +108,18 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+  
+- intent:
+
+- intent: ask_for_help
+  examples: |
+    - help
+    - Can you help me?
+    - I need your help!
+    - I have to ask you something
+    - There is something that I need to ask you
+    - I have some stuff to ask you
+    - give me a hand
 
 - intent: find_continent
   examples: |
@@ -117,7 +144,7 @@ nlu:
     -[Netherlands](country)
 
 
-- intent: country_info
+- intent: city_info
   examples: |
     -[Rome](city)
     -[Sao Paulo](city)
@@ -144,8 +171,101 @@ nlu:
     -thanks
     -thanks a lot
     -great,thank you
+    -thank you for being here
 
+- intent: ask_origin
+  examples: |
+    - Where are you from?
+    - What city do you live in?
+    - Where do you come from?
+
+- intent: ask_hobbies
+  examples: |
+    - What are your hobbies?
+    - What do you like to do for fun?
+    - What do you do in your free time?
+    - What do you like doing for fun?
+
+- intent: ask_bot_purpose
+  examples: |
+    - What can you do?
+    - What are you able to do?
+    - What is your purpose?
+    - What do you do?
+    - What is your job?    
+
+- intent: ask_what_are_you_doing
+  examples: |
+    - What are you doing?
+    - Whatcha doin’?
+    - What are you up to?
+    - What are you busy with?
+    - What’s keeping you busy?
+
+- intent: what_am_I_doing
+  examples: |
+    - I'm studying for my exam
+    - Just scrolling through social media
+    - Watching Netflix
+    - Cooking dinner
+    - Working on a project
+    - Playing video games
+    - Taking a walk outside
+    - Listening to music
+    - Cleaning my room
+    - Exercising at the gym
+    - Having coffee with a friend
+    - Driving right now
+    - Shopping online
+    - Reading a book
+    - Just relaxing
+    - I'm at work
+    - I'm in a meeting
+    - Trying to fix my computer
+    - Learning something new
+    - Writing an email
+    - Planning my weekend
+    - Thinking about life
+    - Staring at the ceiling
+    - Multitasking like crazy
+    - Procrastinating (as usual)
+    - Nothing special
+    - Just killing time
+    - Waiting for someone
+    - Enjoying the weather
+    - Bored out of my mind
+    - Pretending to be busy
+
+- intent: sad_what_am_I_doing
+  examples: |
+    - I'm just crying in my room
+    - Lying in bed feeling awful
+    - Staring at the wall, feeling empty
+    - Drinking alone... again
+    - Crying over my ex
+    - Overthinking everything
+    - Ignoring everyone's messages
+    - Eating junk food to feel better
+    - Watching sad movies to match my mood
+    - Listening to depressing music
+    - Writing sad poems
+    - Regretting all my life choices
+    - Feeling lonely in a crowded room
+    - Hiding from the world
+    - Can't stop overanalyzing
+    - Trying not to break down
+    - Just existing, not living
+    - Wishing things were different
     
+
+- intent: busy
+  examples: |
+    - I'm busy with some stuff that I have to do
+    - I have work to do
+    - I'm occupied right now
+    - busy now
+    - occupied with tasks
+
 
 - intent: find_the_weather_forecast
   examples: | 
@@ -158,8 +278,4 @@ nlu:
     - I want to know the weather of [Nice](city) on [20th of september]
     
 
-- intent: ask_openai
-  examples: |
-    - can you help me?
-    - I want to ask something to ChatGPT
-    - get info from OpenAI
+

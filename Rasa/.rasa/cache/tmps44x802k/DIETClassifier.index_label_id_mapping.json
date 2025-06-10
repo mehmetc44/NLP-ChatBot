@@ -1,0 +1,19 @@
+{
+  "0": "affirm",
+  "1": "ask_bot_purpose",
+  "2": "ask_hobbies",
+  "3": "ask_openai",
+  "4": "ask_origin",
+  "5": "bot_challenge",
+  "6": "city_info",
+  "7": "country_info",
+  "8": "date_info",
+  "9": "deny",
+  "10": "find_continent",
+  "11": "find_the_weather_forecast",
+  "12": "goodbye",
+  "13": "greet",
+  "14": "mood_great",
+  "15": "mood_unhappy",
+  "16": "thanks"
+}

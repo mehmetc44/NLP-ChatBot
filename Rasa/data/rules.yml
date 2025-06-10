@@ -2,13 +2,52 @@ version: "3.1"
 
 rules:
 
+- rule: The message Of Fallback
+  steps:
+  - intent: nlu_fallback
+  - action: utter_default
+
 - rule: Say goodbye anytime the user says goodbye
   steps:
   - intent: goodbye
   - action: utter_goodbye
+
+- rule: busy expression
+  steps:
+  - intent: busy
+  - action: utter_busy
+
+- rule: how are you
+  steps:
+  - intent: ask_how_are_you
+  - action: utter_how_are_you
 
 - rule: Say 'I am a bot' anytime the user challenges
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
 
+- rule: Respond to hobbies question
+  steps:
+    - intent: ask_hobbies
+    - action: utter_ask_hobbies
+
+- rule: Respond to origin question
+  steps:
+    - intent: ask_origin
+    - action: utter_ask_origin
+
+- rule: Tell me what the bot does
+  steps:
+  - intent: ask_bot_purpose
+  - action: utter_bot_purpose
+
+- rule: Greeting when we shell our bot at first
+  conversation_start: true
+  steps:
+  - action: utter_greeting_at_first
+
+- rule: How Can I assist
+  steps:
+  - intent: ask_for_help
+  - action: utter_assist

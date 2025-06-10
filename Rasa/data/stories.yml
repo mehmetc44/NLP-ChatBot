@@ -9,6 +9,7 @@ stories:
   - intent: mood_great
   - action: utter_happy
 
+
 - story: sad path 1
   steps:
   - intent: greet
@@ -19,6 +20,7 @@ stories:
   - intent: affirm
   - action: utter_happy
 
+
 - story: sad path 2
   steps:
   - intent: greet
@@ -27,8 +29,44 @@ stories:
   - action: utter_cheer_up
   - action: utter_did_that_help
   - intent: deny
-  - action: utter_goodbye
+  - action: utter_feel_better
 
+
+- story: What are you doing part (normal)
+  steps:
+  - intent: ask_what_are_you_doing
+  - action: utter_what_are_you_doing
+  - action: utter_what_about_you
+  - intent: what_am_I_doing
+  - action: utter_have_fun
+  - intent: thanks
+  - action: utter_you_are_welcome
+
+- story: What are you doing part (sad1)
+  steps:
+  - intent: ask_what_are_you_doing
+  - action: utter_what_are_you_doing
+  - action: utter_what_about_you
+  - intent: sad_what_am_I_doing
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: affirm
+  - action: utter_happy
+  - intent: thanks
+  - action: utter_you_are_welcome
+
+- story: What are you doing part (sad2)
+  steps:
+  - intent: ask_what_are_you_doing
+  - action: utter_what_are_you_doing
+  - action: utter_what_about_you
+  - intent: sad_what_am_I_doing
+  - action: utter_cheer_up
+  - action: utter_did_that_help
+  - intent: deny
+  - action: utter_feel_better
+  - intent: thanks
+  - action: utter_you_are_welcome
 
 - story: user asks for continent with country info
   steps:

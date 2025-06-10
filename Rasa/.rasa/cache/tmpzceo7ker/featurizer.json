@@ -1,0 +1,78 @@
+{
+  "type": "IntentMaxHistoryTrackerFeaturizer",
+  "state_featurizer": {
+    "action_texts": [],
+    "entity_tag_specs": [],
+    "feature_states": {
+      "intent": {
+        "affirm": 0,
+        "ask_openai": 1,
+        "back": 2,
+        "bot_challenge": 3,
+        "city_info": 4,
+        "country_info": 5,
+        "date_info": 6,
+        "deny": 7,
+        "find_continent": 8,
+        "find_the_weather_forecast": 9,
+        "goodbye": 10,
+        "greet": 11,
+        "mood_great": 12,
+        "mood_unhappy": 13,
+        "nlu_fallback": 14,
+        "out_of_scope": 15,
+        "restart": 16,
+        "session_start": 17,
+        "thanks": 18
+      },
+      "action_name": {
+        "action_listen": 0,
+        "action_restart": 1,
+        "action_session_start": 2,
+        "action_default_fallback": 3,
+        "action_deactivate_loop": 4,
+        "action_revert_fallback_events": 5,
+        "action_default_ask_affirmation": 6,
+        "action_default_ask_rephrase": 7,
+        "action_two_stage_fallback": 8,
+        "action_unlikely_intent": 9,
+        "action_back": 10,
+        "...": 11,
+        "action_extract_slots": 12,
+        "action_find_continent": 13,
+        "action_hello_world": 14,
+        "action_find_weather": 15,
+        "action_openai_response": 16,
+        "utter_ask_city": 17,
+        "utter_ask_country_info": 18,
+        "utter_ask_date": 19,
+        "utter_ask_question": 20,
+        "utter_cheer_up": 21,
+        "utter_did_that_help": 22,
+        "utter_finding_continent": 23,
+        "utter_finding_weather": 24,
+        "utter_goodbye": 25,
+        "utter_greet": 26,
+        "utter_greeting_at_first": 27,
+        "utter_happy": 28,
+        "utter_iamabot": 29,
+        "utter_you_are_welcome": 30
+      },
+      "entities": {
+        "city": 0,
+        "country": 1,
+        "date": 2
+      },
+      "slots": {
+        "city_0": 0,
+        "date_0": 1,
+        "country_0": 2,
+        "continent_0": 3,
+        "user_question_0": 4
+      },
+      "active_loop": {}
+    }
+  },
+  "remove_duplicates": true,
+  "max_history": 5
+}

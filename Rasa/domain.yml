@@ -14,7 +14,15 @@ intents:
   - city_info
   - date_info
   - thanks
-  - ask_openai
+  - busy
+  - ask_for_help
+  - ask_origin
+  - ask_hobbies
+  - ask_bot_purpose
+  - ask_what_are_you_doing
+  - ask_how_are_you
+  - what_am_I_doing
+  - sad_what_am_I_doing
 
 
 entities:
@@ -55,26 +63,30 @@ slots:
 
 actions:
   - action_find_continent
-  - action_hello_world
+  - action_welcome
   - action_find_weather
   - action_openai_response
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
+  - text: "Hello! How are you?"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
+    image: "https://tr.pinterest.com/pin/795166877949519298/"
 
   utter_did_that_help:
   - text: "Did that help you?"
 
   utter_happy:
-  - text: "Great, happy to hear that!"
+  - text: "Perfect, happy to hear that!"
+  - text: "I am glad to hear that"
+
 
   utter_goodbye:
-  - text: "Bye"
+  - text: "Bye bye, have a good time!"
+  - text: "Take care of yourself!"
+  - text: "see you, miss me a lot"
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
@@ -84,9 +96,14 @@ responses:
 
   utter_finding_continent:
   - text: "Let me look it up for a sec"
+  - text: "I am searching it in your Sql File"
 
   utter_you_are_welcome:
   - text: "You are welcome"
+
+  utter_assist:
+    - text: "How Can I assist you?"
+    - text: "How Can I help you?"
 
   utter_finding_weather:
     - text: "I check it out"
@@ -97,9 +114,56 @@ responses:
   utter_ask_date:
     - text: "What date would you like to know"
 
-  utter_ask_question:
-    - text: "What would you like to ask?"
 
+  utter_how_are_you:
+    - text: "Awesome! Life’s treating me well today."
+    - text: "Couldn’t be better!"
+    - text: "My WiFi is connected, so I’m happy. "
+    - text: "Better now that you’re here!"
+
+  utter_greeting_at_first:
+    - text: "Hello, I am Natasha. How can I help you?"
+    - text: "Welcome! This is Natasha. I am here to answer your question."
+
+  utter_have_fun:
+    - text: "have fun with that"
+
+  utter_feel_better:
+    - text: "I hope You feel better soon"
+
+  utter_busy:
+    - text: "Sounds like someone's saving the world there... Don't forget to hydrate, superhero!"
+    - text: "Ah, the eternal struggle of adulting! Need a coffee break to power through?"
+
+
+  utter_ask_hobbies:
+    - text: "I enjoy reading books and listening to music!"
+    - text: "I love exploring new technologies in my free time."
+    - text: "I'm into painting and digital art when I'm not chatting with users."
+
+  utter_what_about_you:
+    - text: "What about you?"
+    - text: "How about you?"
+    - text: "and You?"
+    - text: "you?"
+
+  utter_ask_origin:
+    - text: "I come from the cloud – no specific place!"
+    - text: "I'm a citizen of the digital world."
+    - text: "I live wherever the servers take me."
+
+  utter_what_are_you_doing:
+    - text: "I'm just thinking about the meaning of life."
+    - text: "Waiting for your next command!"
+    - text: "Processing data and sipping on some electricity."
+    - text: "Just chilling in the cloud."
+
+  utter_bot_purpose:
+    - text: "I am a chatbot. I can classify countries by continent, provide weather information based on date and location,
+     and can introduce myself a bit..."
+
+  utter_default:
+    - text: "I am sorry! I could not get What you meant"
 
 
 session_config:
