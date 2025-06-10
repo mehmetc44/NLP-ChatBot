@@ -2,7 +2,7 @@ from PyQt5 import QtWidgets, QtCore, QtGui
 from src.gui.styles.colors import Colors
 
 class MessageBox(QtWidgets.QWidget):
-    def __init__(self, text):
+    def __init__(self, text, sender):
         super().__init__()
         self.horizontalLayout = QtWidgets.QHBoxLayout(self)
         self.horizontalLayout.setContentsMargins(10, 10, 10, 10)
@@ -24,6 +24,28 @@ class MessageBox(QtWidgets.QWidget):
 
         QtCore.QTimer.singleShot(0, lambda: self.adjustLabelSize(parent_width=self.width()))
         self.setMessage(text)
+        if(sender == "User"):
+            self.horizontalLayout.addItem(self.spacerItem)
+            self.horizontalLayout.addWidget(self.label)
+            self.label.setStyleSheet(f"""
+                    background-color: {Colors.Color_Gray};
+                    color: white;
+                    border-radius: 15px;
+                    border: 1px solid black;
+                    padding: 10px;
+                """)
+        elif(sender=="Bot"):
+            self.horizontalLayout.addWidget(self.label)
+            self.horizontalLayout.addItem(self.spacerItem)
+
+            self.label.setStyleSheet(f"""
+                        background-color: {Colors.Color_Light};
+                        color: black;
+                        border-radius: 15px;
+                        border: 1px solid black;
+                        padding: 10px;
+                    """)
+
     def setMessage(self, message):
         self.label.setText(message)
         self.adjustLabelSize()
@@ -48,6 +70,7 @@ class MessageBox(QtWidgets.QWidget):
         doc.setTextWidth(self.label.width() - 30)
         self.setFixedHeight(max(int(doc.size().height() + 40), self._min_height))
 
+
     def updateMaxWidth(self, parent_width):
         max_width = max(200, parent_width)
         self.adjustLabelSize(max_width)
@@ -56,34 +79,8 @@ class MessageBox(QtWidgets.QWidget):
         self.updateMaxWidth(event.size().width())
         super().resizeEvent(event)
 
-class SendMessageBox(MessageBox):
-    def __init__(self, text):
-        super().__init__(text)
-        self.horizontalLayout.addItem(self.spacerItem)
-        self.horizontalLayout.addWidget(self.label)
-
-        self.label.setStyleSheet(f"""
-            background-color: {Colors.Color_Gray};
-            color: white;
-            border-radius: 15px;
-            border: 1px solid black;
-            padding: 10px;
-        """)
 
 
-class ReceiveMessageBox(MessageBox):
-    def __init__(self, text):
-        super().__init__(text)
-        self.horizontalLayout.addWidget(self.label)
-        self.horizontalLayout.addItem(self.spacerItem)
-
-        self.label.setStyleSheet(f"""
-            background-color: {Colors.Color_Light};
-            color: black;
-            border-radius: 15px;
-            border: 1px solid black;
-            padding: 10px;
-        """)
 
 
 

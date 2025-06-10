@@ -1,0 +1,2 @@
+SENDER_USER = "User"
+SENDER_BOT = "Bot"
