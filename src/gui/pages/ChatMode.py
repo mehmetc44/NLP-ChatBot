@@ -1,8 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QLineEdit
+from utils.rasa_client import RasaClient
+from utils.config import *
 from src.gui.styles.colors import Colors
 from PyQt5.QtCore import Qt
 from src.gui.widgets.MessageBoxes import *
+
+
 
 class ChatWidget(QWidget):
     def __init__(self):
@@ -139,20 +143,24 @@ class ChatWidget(QWidget):
 
         self.gridLayout.addWidget(self.frame_2, 1, 0, 1, 1)
 
-        self.sendButton.clicked.connect(self.sendMessage)
-        self.inputLine.returnPressed.connect(self.sendMessage)
-
-        self.addMessage(ReceiveMessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. Basılı veya el yazması parça."""))
+        self.sendButton.clicked.connect(self.converse)
+        self.inputLine.returnPressed.connect(self.converse)
 
     def addMessage(self, msg_box):
         self.scrollLayout.addWidget(msg_box)
         QtCore.QTimer.singleShot(50, lambda: self.scrollArea.verticalScrollBar().setValue(
-            self.scrollArea.verticalScrollBar().maximum()))
+        self.scrollArea.verticalScrollBar().maximum()))
 
-    def sendMessage(self):
+    def sendMessage(self,sender):
         text = self.inputLine.text().strip()
         if text:
             self.inputLine.clear()
-            self.addMessage(SendMessageBox(text))
+            self.addMessage(MessageBox(text,sender))
 
+    def converse(self):
+        message = self.inputLine.text()
+        self.inputLine.clear()
+        self.addMessage(MessageBox(message,SENDER_USER))
+        result = RasaClient().send_test_message()
+        self.addMessage(MessageBox(result,SENDER_BOT))
 
