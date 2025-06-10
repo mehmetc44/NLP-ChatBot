@@ -7,17 +7,8 @@ import time
 import face_recognition
 import os
 
-path = 'photos'
-images = []
-classNames = []
-myList = os.listdir(path)
-for cl in myList:
-    curImg = cv2.imread(f'{path}/{cl}')
-    images.append(curImg)
-    classNames.append(os.path.splitext(cl)[0])
-
-def findEncodings(images):
-    encodeList = []
+def find_encodings(images):
+    encode_list = []
     for img in images:
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         encodes = face_recognition.face_encodings(img)
