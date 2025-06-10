@@ -4,11 +4,11 @@ import cv2
 import numpy as np
 import face_recognition
 
-imgMec = face_recognition.load_image_file('photos/mec.jpg')
+imgMec = face_recognition.load_image_file('photos/Emre Cengiz/mec.jpg')
 imgMec = cv2.cvtColor(imgMec,cv2.COLOR_BGR2RGB)
 imgMec = cv2.resize(imgMec,(700,700))
 
-imgTest = face_recognition.load_image_file('photos/mec2.jpg')
+imgTest = face_recognition.load_image_file('photos/Emre Cengiz/mec2.jpg')
 imgTest = cv2.cvtColor(imgTest,cv2.COLOR_BGR2RGB)
 imgTest = cv2.resize(imgTest,(700,700))
 
