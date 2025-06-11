@@ -4,9 +4,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import cv2
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
-
-from src.stt.SpeechToText import ContinuousSpeechWorker
-from src.tts import TextToSpeech as tts
+from src.gui.styles.colors import Colors
+from src.stt.SpeechToText import SpeechWorker
 from utils.rasa_client import RasaClient
 
 
@@ -24,14 +23,13 @@ class CameraWidget(QWidget):
         self.message_box = QTextEdit()
         self.message_box.setReadOnly(True)
         self.message_box.setMaximumHeight(100)
-        self.message_box.setStyleSheet("""
-            QTextEdit {
-                background-color: #f0f0f0;
-                border: 1px solid #ccc;
-                padding: 5px;
-                font-size: 14px;
-            }
-        """)
+        self.message_box.setStyleSheet(f"""color: white; 
+                    font-size: 18px;
+                    padding: 5px 10px;
+                    border: 0px;
+                    border-radius: 30px;
+                    background-color: {Colors.Color_Gray};
+                    place-holder""")
 
         # Mikrofon butonu
         self.mic_button = QPushButton()
@@ -39,19 +37,16 @@ class CameraWidget(QWidget):
         self.mic_button.setIconSize(QSize(32, 32))
         self.mic_button.setFixedSize(60, 60)
         self.mic_button.setStyleSheet("""
-            QPushButton {
-                background-color: #e0e0e0;
-                border-radius: 30px;
-                border: 2px solid #a0a0a0;
-            }
-            QPushButton:hover {
-                background-color: #d0d0d0;
-            }
-            QPushButton:pressed {
-                background-color: #c0c0c0;
-            }
-        """)
-        self.mic_button.clicked.connect(self.toggle_microphone)
+                    QPushButton{
+                        padding: 10px;
+                        width: 50px;
+                        border: 0px;
+                        image: url(data/assets/microphone-primary.svg); 
+                    }
+                    QPushButton:hover{
+                        image: url(data/assets/microphone-secondary.svg); 
+                    }
+                """)
 
         # Buton ve mesaj kutusu için yatay layout
         bottom_layout = QHBoxLayout()
@@ -70,46 +65,52 @@ class CameraWidget(QWidget):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
 
-        self.listening = False
-        self.speech_thread = None
-        self.speech_worker = None
 
-    def toggle_microphone(self):
-        self.listening = not self.listening
+        self.mic_button.clicked.connect(self.captureSpeechInput)
 
-        if self.listening:
-            self.mic_button.setStyleSheet("""
-                QPushButton {
-                    background-color: #ff4444;
-                    border-radius: 30px;
-                    border: 2px solid #cc0000;
-                }
-            """)
-            self.start_speech_recognition()
-            self.message_box.append("Dinleme başladı...")
-        else:
-            self.mic_button.setStyleSheet("""
-                QPushButton {
-                    background-color: #e0e0e0;
-                    border-radius: 30px;
-                    border: 2px solid #a0a0a0;
-                }
-            """)
-            self.stop_speech_recognition()
-            self.message_box.append("Dinleme durduruldu")
+    def microphoneActive(self):
+        self.mic_button.setStyleSheet("""
+                        QPushButton{
+                            padding: 10px;
+                            width: 50px;
+                            border: 0px;
+                            image: url(data/assets/microphone-red.svg); 
+                        }""")
 
+    def microphoneDisactive(self):
+        self.mic_button.setStyleSheet("""
+                                QPushButton{
+                                    padding: 10px;
+                                    width: 50px;
+                                    border: 0px;
+                                    image: url(data/assets/microphone-primary.svg); 
+                                }
+                                QPushButton:hover{
+                                    image: url(data/assets/microphone-secondary.svg); 
+                                }""")
 
-    def on_error_occurred(self, error):
-        self.message_box.append(f"Hata: {error}")
-        self.tts_worker = TTSWorker(error)
-        self.tts_thread = QThread()
-        self.tts_worker.moveToThread(self.tts_thread)
-        self.tts_thread.started.connect(self.tts_worker.run)
-        self.tts_worker.finished.connect(self.tts_thread.quit)
-        self.tts_worker.finished.connect(self.tts_worker.deleteLater)
-        self.tts_thread.finished.connect(self.tts_thread.deleteLater)
-        self.tts_worker.error_occurred.connect(lambda e: print(f"TTS Error: {e}"))
-        self.tts_thread.start()
+    def captureSpeechInput(self):
+        self.microphoneActive()
+        self.thread = QThread()
+        self.worker = SpeechWorker()
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.onSpeechRecognized)
+        self.worker.error.connect(self.onSpeechError)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.thread.start()
+
+    def onSpeechRecognized(self, text):
+        self.message_box.setText(text)
+        self.microphoneDisactive()
+
+    def onSpeechError(self, message):
+        print(message)
+        self.message_box.setText(message)
+        self.microphoneDisactive()
+
     def start_camera(self):
         if self.cap is None:
             self.cap = cv2.VideoCapture(0)
@@ -137,28 +138,9 @@ class CameraWidget(QWidget):
             self.update_frame()
     def converse(self):
         pass
-
         message = self.inputLine.text()
         self.inputLine.clear()
         result = RasaClient().send_test_message()
-    def on_text_detected(self, text):
-        self.message_box.append(f"Algılandı: {text}")
-        #result = RasaClient().send_test_message()
-        #self.converse(result)
 
 
-class TTSWorker(QObject):
-    finished = pyqtSignal()
-    error_occurred = pyqtSignal(str)
-    def __init__(self, error_message):
-        super().__init__()
-        self.error_message = error_message
-
-    def run(self):
-        try:
-            tts.speak(self.error_message)  # TTS işlemi
-        except Exception as e:
-            self.error_occurred.emit(str(e))  # Hata sinyali
-        finally:
-            self.finished.emit()  # İşlem tamamlandı
 

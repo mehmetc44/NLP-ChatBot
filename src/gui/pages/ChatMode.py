@@ -1,9 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QLineEdit
+
+from src.stt.SpeechToText import SpeechWorker
 from utils.rasa_client import RasaClient
 from utils.config import *
 from src.gui.styles.colors import Colors
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 from src.gui.widgets.MessageBoxes import *
 
 
@@ -145,6 +147,54 @@ class ChatWidget(QWidget):
 
         self.sendButton.clicked.connect(self.converse)
         self.inputLine.returnPressed.connect(self.converse)
+        self.microphoneButton.clicked.connect(self.captureSpeechInput)
+
+
+
+
+    def microphoneActive(self):
+        self.microphoneButton.setStyleSheet("""
+                    QPushButton{
+                        padding: 10px;
+                        width: 50px;
+                        border: 0px;
+                        image: url(data/assets/microphone-red.svg); 
+                    }""")
+    def microphoneDisactive(self):
+        self.microphoneButton.setStyleSheet("""
+                            QPushButton{
+                                padding: 10px;
+                                width: 50px;
+                                border: 0px;
+                                image: url(data/assets/microphone-primary.svg); 
+                            }
+                            QPushButton:hover{
+                                image: url(data/assets/microphone-secondary.svg); 
+                            }""")
+
+
+    def captureSpeechInput(self):
+        self.microphoneActive()
+        self.thread = QThread()
+        self.worker = SpeechWorker()
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.onSpeechRecognized)
+        self.worker.error.connect(self.onSpeechError)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.thread.start()
+
+    def onSpeechRecognized(self, text):
+        self.inputLine.setText(text)
+        self.microphoneDisactive()
+
+    def onSpeechError(self, message):
+        print(message)
+        self.inputLine.setText("")
+        self.microphoneDisactive()
+
 
     def addMessage(self, msg_box):
         self.scrollLayout.addWidget(msg_box)

@@ -69,9 +69,10 @@ class SpeechWorker(QObject):
                 self.finished.emit(text)
             except sr.UnknownValueError:
                 self.error.emit("Anlayamadım.")
+                self.finished.emit("")
             except sr.RequestError as e:
                 self.error.emit(f"İstek hatası: {e}")
-
+                self.finished.emit("")
 
 
 
