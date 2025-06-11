@@ -1,0 +1,52 @@
+{
+  "lookup": {
+    "rules": {
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]": "utter_goodbye",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "utter_default",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"utter_default\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"busy\"}}]": "utter_busy",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"busy\"}}, {\"prev_action\": {\"action_name\": \"utter_busy\"}, \"user\": {\"intent\": \"busy\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_for_help\"}}]": "utter_assist",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_for_help\"}}, {\"prev_action\": {\"action_name\": \"utter_assist\"}, \"user\": {\"intent\": \"ask_for_help\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_origin\"}}]": "utter_ask_origin",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_origin\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_origin\"}, \"user\": {\"intent\": \"ask_origin\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}]": "utter_how_are_you",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}, {\"prev_action\": {\"action_name\": \"utter_how_are_you\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}]": "utter_nice_to_meet_you",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}, {\"prev_action\": {\"action_name\": \"utter_nice_to_meet_you\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hobbies\"}}]": "utter_ask_hobbies",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hobbies\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_hobbies\"}, \"user\": {\"intent\": \"ask_hobbies\"}}]": "action_listen",
+      "[{}, {\"prev_action\": {\"action_name\": \"utter_greeting_at_first\"}}]": "action_listen",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}]": "utter_bot_purpose",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}, {\"prev_action\": {\"action_name\": \"utter_bot_purpose\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}]": "action_listen"
+    },
+    "rule_only_slots": [],
+    "rule_only_loops": [],
+    "rules_for_loop_unhappy_path": {},
+    "rules_not_in_stories": [
+      "predicting default action with intent restart",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hobbies\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_hobbies\"}, \"user\": {\"intent\": \"ask_hobbies\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"busy\"}}, {\"prev_action\": {\"action_name\": \"utter_busy\"}, \"user\": {\"intent\": \"busy\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_for_help\"}}, {\"prev_action\": {\"action_name\": \"utter_assist\"}, \"user\": {\"intent\": \"ask_for_help\"}}]",
+      "[{}, {\"prev_action\": {\"action_name\": \"utter_greeting_at_first\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}, {\"prev_action\": {\"action_name\": \"utter_bot_purpose\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"busy\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}, {\"prev_action\": {\"action_name\": \"utter_default\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_bot_purpose\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_hobbies\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}, {\"prev_action\": {\"action_name\": \"utter_nice_to_meet_you\"}, \"user\": {\"intent\": \"nice_to_meet_you\"}}]",
+      "predicting default action with intent back",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_origin\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}, {\"prev_action\": {\"action_name\": \"utter_how_are_you\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"nlu_fallback\"}}]",
+      "predicting default action with intent session_start",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_origin\"}}, {\"prev_action\": {\"action_name\": \"utter_ask_origin\"}, \"user\": {\"intent\": \"ask_origin\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_how_are_you\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"ask_for_help\"}}]",
+      "[{\"prev_action\": {\"action_name\": \"action_listen\"}, \"user\": {\"intent\": \"goodbye\"}}, {\"prev_action\": {\"action_name\": \"utter_goodbye\"}, \"user\": {\"intent\": \"goodbye\"}}]"
+    ]
+  }
+}

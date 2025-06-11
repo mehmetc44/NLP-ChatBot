@@ -2,7 +2,7 @@ import requests
 import subprocess
 import os
 import time
-import sys
+
 
 class RasaClient:
     def __init__(self, endpoint="http://localhost:5005/webhooks/rest/webhook"):
@@ -16,11 +16,11 @@ class RasaClient:
             "message": message
         }
         try:
-            print(f"Sending message: {payload}")
+            #print(f"Sending message: {payload}")
             response = requests.post(self.endpoint, json=payload, timeout=10)
             response.raise_for_status()
             data = response.json()
-            print(f"Server response: {data}")
+            #print(f"Server response: {data}")
             return [msg.get("text", "") for msg in data if "text" in msg]
         except requests.RequestException as e:
             print(f"Rasa connection error: {e}")
@@ -42,19 +42,7 @@ class RasaClient:
             if not os.path.exists(rasa_project_dir):
                 raise FileNotFoundError(f"Rasa project directory not found at {rasa_project_dir}")
 
-            # Start Rasa server
-            rasa_cmd = [python_executable, "-m", "rasa", "run", "--enable-api", "--cors", "*"]
-            self.rasa_process = subprocess.Popen(
-                rasa_cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-                cwd=rasa_project_dir
-            )
-            print("Rasa server is starting...")
-            time.sleep(15)
-
-            # Start Action server
+                # Start Action server
             action_cmd = [python_executable, "-m", "rasa", "run", "actions", "--port", "5057"]
             self.action_process = subprocess.Popen(
                 action_cmd,
@@ -64,17 +52,36 @@ class RasaClient:
                 cwd=rasa_project_dir
             )
             print("Action server is starting...")
-            time.sleep(15)
+            time.sleep(10)
+
+
+
+
+
+            # Start Rasa server
+            rasa_cmd = [python_executable, "-m", "rasa", "run", "--enable-api", "--cors", "*"]
+            self.rasa_process = subprocess.Popen(
+                rasa_cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                cwd=rasa_project_dir
+
+            )
+            print("Rasa server is starting...")
+            time.sleep(10)
+
+
 
             # Check process status
             try:
-                stdout, stderr = self.rasa_process.communicate(timeout=1)
+                stdout, stderr = self.rasa_process.communicate(timeout=30)
                 if stderr:
                     raise RuntimeError(f"Rasa server error: {stderr}")
             except subprocess.TimeoutExpired:
                 print("Rasa server is running.")
             try:
-                stdout, stderr = self.action_process.communicate(timeout=1)
+                stdout, stderr = self.action_process.communicate(timeout=10)
                 if stderr:
                     raise RuntimeError(f"Action server error: {stderr}")
             except subprocess.TimeoutExpired:
@@ -95,10 +102,10 @@ class RasaClient:
 
     def start_chat(self):
         """Run an interactive chat session with the Rasa bot."""
-        print("Start chatting with the bot! Type 'exit' to quit.")
+        print("Start chatting with the bot! Type 'exit' , 'quit' , 'stop'.")
         while True:
             user_input = input("You: ")
-            if user_input.lower() in ["exit", "quit"]:
+            if user_input.lower() in ["exit", "quit" , "stop"]:
                 print("Ending chat session.")
                 break
             responses = self.send_message(user_input)
@@ -106,14 +113,14 @@ class RasaClient:
                 print(f"Bot: {response}")
 
 if __name__ == "__main__":
-    cli = RasaClient()
+    client = RasaClient()
     try:
-        cli.start_rasa_servers()
-        cli.start_chat()
+        client.start_rasa_servers()
+        client.start_chat()
     except KeyboardInterrupt:
         print("\nChat interrupted by user.")
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        cli.stop_rasa_servers()
+        client.stop_rasa_servers()
 

@@ -22,10 +22,10 @@ rules:
   - intent: ask_how_are_you
   - action: utter_how_are_you
 
-- rule: Say 'I am a bot' anytime the user challenges
+- rule: Nice to meet you
   steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - intent: nice_to_meet_you
+  - action: utter_nice_to_meet_you
 
 - rule: Respond to hobbies question
   steps:

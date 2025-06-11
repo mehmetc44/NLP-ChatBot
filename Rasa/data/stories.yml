@@ -97,3 +97,15 @@ stories:
   - intent: thanks
   - action: utter_you_are_welcome
 
+- story: talking about who is users and saving it
+  steps:
+  - intent: bot_who_are_you
+  - action: utter_i_am_a_bot
+  - action: utter_what_is_your_name
+  - intent: who_am_I
+    entities:
+      - name: Tolga
+  - action: action_save_name
+  - intent: thanks
+  - action: utter_you_are_welcome
+

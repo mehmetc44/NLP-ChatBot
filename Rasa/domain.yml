@@ -7,7 +7,7 @@ intents:
   - deny
   - mood_great
   - mood_unhappy
-  - bot_challenge
+  - bot_who_are_you
   - find_continent
   - find_the_weather_forecast
   - country_info
@@ -21,6 +21,8 @@ intents:
   - ask_bot_purpose
   - ask_what_are_you_doing
   - ask_how_are_you
+  - nice_to_meet_you
+  - who_am_I
   - what_am_I_doing
   - sad_what_am_I_doing
 
@@ -29,6 +31,7 @@ entities:
   - city
   - date
   - country
+  - name
 
 slots:
   city:
@@ -55,17 +58,18 @@ slots:
       - type: from_entity
         entity: continent
 
-  user_question:
+  name:
     type: text
     mappings:
       - type: from_entity
-        entity: user_question
+        entity: name
 
 actions:
   - action_find_continent
   - action_welcome
   - action_find_weather
-  - action_openai_response
+  - action_save_name
+
 
 responses:
   utter_greet:
@@ -88,22 +92,34 @@ responses:
   - text: "Take care of yourself!"
   - text: "see you, miss me a lot"
 
-  utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
+  utter_i_am_a_bot:
+  - text: "I am a bot Named Natasha and powered by Rasa"
+  - text: "My name is Natasha and I am powered by rasa"
+  - text: "This is bot Natasha"
 
   utter_ask_country_info:
   - text: "Do you want to learn the continent of which country ? Can you tell me the country name"
+  - text: "Can you tell me the country name so that I can check"
 
   utter_finding_continent:
   - text: "Let me look it up for a sec"
-  - text: "I am searching it in your Sql File"
+  - text: "I am searching it now"
 
   utter_you_are_welcome:
   - text: "You are welcome"
+  - text: "No Worries"
+
+  utter_nice_to_meet_you:
+    - text: "Nice to meet you too {name}"
+    - text: "I am also pleased to meet you {name}"
+    - text: "Me too {name}, thank you"
 
   utter_assist:
     - text: "How Can I assist you?"
     - text: "How Can I help you?"
+
+  utter_comment_name:
+    - text: "That is a lovely name"
 
   utter_finding_weather:
     - text: "I check it out"
@@ -146,6 +162,11 @@ responses:
     - text: "How about you?"
     - text: "and You?"
     - text: "you?"
+
+  utter_what_is_your_name:
+    - text: "and What is your name"
+    - text: "Who are you?"
+    - text: "then Who am I talking to"
 
   utter_ask_origin:
     - text: "I come from the cloud – no specific place!"

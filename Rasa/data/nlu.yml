@@ -102,18 +102,36 @@ nlu:
     - bad
     - so bad 
 
-- intent: bot_challenge
+- intent: bot_who_are_you
   examples: |
+    - who are you?
+    - who am I talking to?
     - are you a bot?
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
-  
-- intent:
+
+- intent: who_am_I
+  examples: |
+    - I am [Tolga] (name)
+    - My name is [Victor](name)
+    - This is [Emre](name)
+    - You are talking to [Merve](name)
+    - [Aylin](name)
+    
+
+- intent: nice_to_meet_you
+  examples: |
+    - It is nice to meet you
+    - nice to meet you
+    - I am honoured to meet you
+    - pleased to meet you
+    - I am pleased to meet you
 
 - intent: ask_for_help
   examples: |
     - help
+    - Natasha
     - Can you help me?
     - I need your help!
     - I have to ask you something
