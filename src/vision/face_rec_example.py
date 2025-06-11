@@ -1,4 +1,5 @@
-import src.vision.faceR4-1-1.FaceRecognizer
+import src.vision
+import cv2
 
 # Kullanım örneği:
 if __name__ == "__main__":
@@ -20,3 +21,17 @@ if __name__ == "__main__":
             break
 
     cap.release()
+
+
+self.face_recognizer = FaceRecognizer(photos_dir='photos')
+
+
+# Yeni frame geldiğinde (örneğin QTimer timeout'unda)
+def process_camera_frame(self):
+    frame = self.get_frame_from_camera()  # Kendi frame alma metodunuz
+    recognized_names = self.face_recognizer.process_frame(frame)
+
+    if recognized_names:
+        print("Tanınan kişiler:", recognized_names)
+    else:
+        print("Yüz tespit edilemedi veya tanınmadı")
