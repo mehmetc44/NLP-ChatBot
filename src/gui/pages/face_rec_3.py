@@ -6,14 +6,14 @@ from multiprocessing import Process, Queue
 
 
 class FaceRecognizer:
-    def __init__(self, photos_dir='photos'):
+    def __init__(self, photos_dir='data/photos'):
         self.known_encodings = []
         self.known_names = []
         self.load_known_faces(photos_dir)
 
         self.face_detector = cv2.dnn.readNetFromCaffe(
-            'cascades/opencv_dnn_model.prototxt',
-            'cascades/opencv_dnn_model.caffemodel'
+            'data/cascades/opencv_dnn_model.prototxt',
+            'data/cascades/opencv_dnn_model.caffemodel'
         )
 
     def load_known_faces(self, photos_dir):
@@ -97,17 +97,17 @@ def recognition_service(input_queue, output_queue):
             output_queue.put(names)
 
 
-if __name__ == "__main__":
-    input_queue = Queue()
-    output_queue = Queue()
-
-    p = Process(target=recognition_service, args=(input_queue, output_queue))
-    p.start()
-
-    try:
-        while True:
-            # Servis çalışırken başka işlemler yapılabilir
-            pass
-    except KeyboardInterrupt:
-        input_queue.put(None)
-        p.join()
+#if __name__ == "__main__":
+ #   input_queue = Queue()
+  #  output_queue = Queue()
+#
+ #   p = Process(target=recognition_service, args=(input_queue, output_queue))
+  #  p.start()
+#
+ #   try:
+  #      while True:
+   #         # Servis çalışırken başka işlemler yapılabilir
+    #        pass
+#    except KeyboardInterrupt:
+ #       input_queue.put(None)
+  #      p.join()

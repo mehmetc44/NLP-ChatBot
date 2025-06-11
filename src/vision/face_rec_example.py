@@ -4,7 +4,7 @@ import cv2
 # Kullanım örneği:
 if __name__ == "__main__":
     # Initialize once
-    recognizer = FaceRecognizer(photos_dir='photos')
+    recognizer = FaceRecognizer(photos_dir='../../data/photos')
 
     # Test için basit bir kamera döngüsü (siz kullanmayacaksınız)
     cap = cv2.VideoCapture(0)
@@ -23,7 +23,7 @@ if __name__ == "__main__":
     cap.release()
 
 
-self.face_recognizer = FaceRecognizer(photos_dir='photos')
+self.face_recognizer = FaceRecognizer(photos_dir='../../data/photos')
 
 
 # Yeni frame geldiğinde (örneğin QTimer timeout'unda)

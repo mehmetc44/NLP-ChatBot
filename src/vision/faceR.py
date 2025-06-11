@@ -5,7 +5,7 @@ from face_rec import FaceRecognizer
 
 def main():
     # 1. FaceRecognizer'ı başlat
-    recognizer = FaceRecognizer(photos_dir='photos')
+    recognizer = FaceRecognizer(photos_dir='../../data/photos')
 
     # 2. Kamera bağlantısı (sadece test için, siz PyQt'nin kamerayı kullanacaksınız)
     cap = cv2.VideoCapture(0)

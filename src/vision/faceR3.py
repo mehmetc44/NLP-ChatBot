@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 from multiprocessing import Queue, Process
-from face_rec_3 import recognition_service
+from src.gui.pages.face_rec_3 import recognition_service
 
 
 def main():

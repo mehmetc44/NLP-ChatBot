@@ -7,6 +7,9 @@ from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from src.gui.styles.colors import Colors
 from src.stt.SpeechToText import SpeechWorker
 from utils.rasa_client import RasaClient
+import numpy as np
+from multiprocessing import Process, Queue
+from src.gui.pages.face_rec_3 import recognition_service
 
 
 class CameraWidget(QWidget):
@@ -65,6 +68,11 @@ class CameraWidget(QWidget):
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
 
+        self.input_queue = Queue()
+        self.output_queue = Queue()
+        self.recog_process = Process(target=recognition_service, args=(self.input_queue, self.output_queue))
+        self.recog_process.start()
+
 
         self.mic_button.clicked.connect(self.captureSpeechInput)
 
@@ -122,25 +130,46 @@ class CameraWidget(QWidget):
             self.cap = None
         self.label.setText("Camera stopped")
         self.label.setPixmap(QPixmap())
+
+        self.input_queue.put(None)
+        self.recog_process.join()
+
     def update_frame(self):
         ret, frame = self.cap.read()
         if ret:
             frame = cv2.flip(frame,1)
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            if self.input_queue.qsize() < 2:
+                self.input_queue.put(frame)
+
+            if self.input_queue.empty():
+                self.input_queue.put(frame)
+            if not self.output_queue.empty():
+                names = self.output_queue.get()
+                if names:
+                    print(f"Tanınan yüzler: {', '.join(names)}")
+                else:
+                    print("Yüz tespit edilemedi")
+
             h, w, ch = frame.shape
             bytes_per_line = ch * w
             img = QImage(frame.data, w, h, bytes_per_line, QImage.Format_RGB888)
             scaled_img = img.scaled(self.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.label.setPixmap(QPixmap.fromImage(scaled_img))
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
         if self.cap and self.label.pixmap():
             self.update_frame()
+
     def converse(self):
-        pass
-        message = self.inputLine.text()
-        self.inputLine.clear()
-        result = RasaClient().send_test_message()
+        message = self.inputLine.text().strip()
+        if message:
+            self.message_box.append(f"Kullanıcı: {message}")
+            self.inputLine.clear()
+            response = RasaClient().send_test_message(message)
+            self.message_box.append(f"Asistan: {response}")
 
 
 

@@ -138,10 +138,10 @@ def main():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    PATH = 'photos'
+    PATH = '../../data/photos'
     THRESHOLD = 0.8
     PHOTO_SIZE = (300, 300)
-    MODEL_PATH = 'cascades/opencv_dnn_model.caffemodel'
+    MODEL_PATH = '../../data/cascades/opencv_dnn_model.caffemodel'
     MODEL_CONFIG = 'cascades/opencv_dnn_model.prototxt'
 
     # Yeni klasör yapısına göre veri yükleme
