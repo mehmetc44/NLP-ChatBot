@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import face_recognition
 import os
+from queue import Empty
 from multiprocessing import Process, Queue
 
 
@@ -86,15 +87,28 @@ def recognition_service(input_queue, output_queue):
     print("Face recognition service started...")
 
     while True:
-        if not input_queue.empty():
-            frame = input_queue.get()
+        try:
+            frame = input_queue.get(timeout=1)
+        except Empty:
+            continue
 
-            # None gönderilirse servisi kapat
-            if frame is None:
-                break
+        if frame is None:
+            print("[INFO] Yüz tanıma servisi kapatılıyor.")
+            break
 
-            names = recognizer.recognize_faces(frame)
-            output_queue.put(names)
+        names = recognizer.recognize_faces(frame)
+        output_queue.put(names)
+
+
+  #      if not input_queue.empty():
+  #          frame = input_queue.get()
+#
+  #          # None gönderilirse servisi kapat
+  #          if frame is None:
+  #              break
+#
+  #          names = recognizer.recognize_faces(frame)
+   #         output_queue.put(names)
 
 
 #if __name__ == "__main__":
