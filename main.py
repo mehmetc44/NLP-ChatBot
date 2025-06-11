@@ -6,3 +6,6 @@ if __name__ == "__main__":
     multiprocessing.freeze_support()  # İsteğe bağlı ama önerilir
     ui = UI()
     ui.run()
+
+
+

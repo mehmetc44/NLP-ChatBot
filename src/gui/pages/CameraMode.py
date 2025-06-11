@@ -1,19 +1,19 @@
-from PyQt5.QtCore import QTimer, QSize
+from PyQt5.QtCore import QTimer, QSize, QObject, pyqtSignal
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import cv2
-from PyQt5.QtCore import QObject, QThread, pyqtSignal
+from PyQt5.QtCore import QThread
 from src.gui.styles.colors import Colors
 from src.stt.SpeechToText import SpeechWorker
-from utils.rasa_client import RasaClient
 import numpy as np
 from multiprocessing import Process, Queue
-from src.gui.pages.face_rec_3 import recognition_service
-from src.gui.pages.hand_detection import HandGestureRecognizer
+from src.vision.FaceRecognition import recognition_service
+from src.vision.HandDetection import HandGestureRecognizer
 from queue import Full, Empty
-from PyQt5.QtCore import QCoreApplication
-
+from utils.rasa_client import RasaClient
+import src.tts.TextToSpeech as tts
+from src.tts.TextToSpeech import TextToSpeechWorker
 
 
 
@@ -83,69 +83,6 @@ class CameraWidget(QWidget):
 
 
         self.mic_button.clicked.connect(self.captureSpeechInput)
-
-    def get_empty_frame(self, width=640, height=480, channels=3):
-        # Siyah, boş frame üretir
-        return np.zeros((height, width, channels), dtype=np.uint8)
-
-    def microphoneActive(self):
-        self.mic_button.setStyleSheet("""
-                        QPushButton{
-                            padding: 10px;
-                            width: 50px;
-                            border: 0px;
-                            image: url(data/assets/microphone-red.svg); 
-                        }""")
-
-    def microphoneDisactive(self):
-        self.mic_button.setStyleSheet("""
-                                QPushButton{
-                                    padding: 10px;
-                                    width: 50px;
-                                    border: 0px;
-                                    image: url(data/assets/microphone-primary.svg); 
-                                }
-                                QPushButton:hover{
-                                    image: url(data/assets/microphone-secondary.svg); 
-                                }""")
-
-    def captureSpeechInput(self):
-        self.microphoneActive()
-        self.thread = QThread()
-        self.worker = SpeechWorker()
-        self.worker.moveToThread(self.thread)
-        self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.onSpeechRecognized)
-        self.worker.error.connect(self.onSpeechError)
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
-        self.thread.start()
-
-    def onSpeechRecognized(self, text):
-        self.message_box.setText(text)
-        self.microphoneDisactive()
-
-    def onSpeechError(self, message):
-        print(message)
-        self.message_box.setText(message)
-        self.microphoneDisactive()
-
-    def start_camera(self):
-        if self.cap is None:
-            self.cap = cv2.VideoCapture(0)
-        self.camera_mode_active = True
-        self.timer.start(30)
-
-    def stop_camera(self):
-        self.camera_mode_active = False
-        if self.cap:
-            self.timer.stop()
-            self.cap.release()
-            self.cap = None
-        self.label.setText("Camera stopped")
-        self.label.setPixmap(QPixmap())
-
     def update_frame(self):
         if self.camera_mode_active and self.cap is not None:
             ret, frame = self.cap.read()
@@ -191,6 +128,96 @@ class CameraWidget(QWidget):
         scaled_img = img.scaled(self.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.label.setPixmap(QPixmap.fromImage(scaled_img))
 
+    def get_empty_frame(self, width=640, height=480, channels=3):
+        # Siyah, boş frame üretir
+        return np.zeros((height, width, channels), dtype=np.uint8)
+
+
+
+    def microphoneActive(self):
+        self.mic_button.setStyleSheet("""
+                        QPushButton{
+                            padding: 10px;
+                            width: 50px;
+                            border: 0px;
+                            image: url(data/assets/microphone-red.svg); 
+                        }""")
+
+    def microphoneDisactive(self):
+        self.mic_button.setStyleSheet("""
+                                QPushButton{
+                                    padding: 10px;
+                                    width: 50px;
+                                    border: 0px;
+                                    image: url(data/assets/microphone-primary.svg); 
+                                }
+                                QPushButton:hover{
+                                    image: url(data/assets/microphone-secondary.svg); 
+                                }""")
+
+    def captureSpeechInput(self):
+        self.microphoneActive()
+        self.thread = QThread()
+        self.worker = SpeechWorker()
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.onSpeechRecognized)
+        self.worker.error.connect(self.onSpeechError)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.thread.start()
+
+    def onRasaResponse(self, response):
+        # Şimdi cevabı seslendir
+        self.tts_thread = QThread()
+        self.tts_worker = tts.TextToSpeechWorker(response)
+        self.tts_worker.moveToThread(self.tts_thread)
+
+        self.tts_thread.started.connect(self.tts_worker.run)
+        self.tts_worker.finished.connect(self.tts_thread.quit)
+        self.tts_worker.finished.connect(self.tts_worker.deleteLater)
+        self.tts_thread.finished.connect(self.tts_thread.deleteLater)
+
+        self.tts_thread.start()
+
+    def onSpeechRecognized(self, text):
+        self.message_box.setText(text)
+        self.microphoneDisactive()
+
+        # Rasa'ya mesajı gönder ve cevap al (thread içinde)
+        self.rasa_thread = QThread()
+        self.rasa_worker = RasaWorker(text)
+        self.rasa_worker.moveToThread(self.rasa_thread)
+
+        self.rasa_thread.started.connect(self.rasa_worker.run)
+        self.rasa_worker.finished.connect(self.onRasaResponse)
+        self.rasa_worker.finished.connect(self.rasa_thread.quit)
+        self.rasa_worker.finished.connect(self.rasa_worker.deleteLater)
+        self.rasa_thread.finished.connect(self.rasa_thread.deleteLater)
+
+        self.rasa_thread.start()
+
+    def onSpeechError(self, message):
+        print(message)
+        self.microphoneDisactive()
+
+    def start_camera(self):
+        if self.cap is None:
+            self.cap = cv2.VideoCapture(0)
+        self.camera_mode_active = True
+        self.timer.start(30)
+
+    def stop_camera(self):
+        self.camera_mode_active = False
+        if self.cap:
+            self.timer.stop()
+            self.cap.release()
+            self.cap = None
+        self.label.setText("Camera stopped")
+        self.label.setPixmap(QPixmap())
+
+
     def resizeEvent(self, event):
         super().resizeEvent(event)
         if self.cap and self.label.pixmap():
@@ -214,27 +241,15 @@ class CameraWidget(QWidget):
 
         event.accept()
 
-#    def closeEvent(self, event):
-#        print("[INFO] Closing CameraWidget, terminating processes/threads.")
+class RasaWorker(QObject):
+    finished = pyqtSignal(str)
 
-        # Kamerayı durdur
-#        self.stop_camera()
+    def __init__(self, message):
+        super().__init__()
+        self.message = message
 
-        # Face recognition sürecini durdur
-#        if hasattr(self, 'recog_process') and self.recog_process.is_alive():
-#            try:
-#                self.input_queue.put(None)
-#            except:
-#                pass
-#            self.recog_process.join(timeout=3)
-#            if self.recog_process.is_alive():
-#                self.recog_process.terminate()
+    def run(self):
+        response = RasaClient().send_test_message()
+        self.finished.emit(response)
 
-        # Eğer konuşma tanıma thread'i varsa durdur
-#        if hasattr(self, 'thread') and self.thread.isRunning():
-#            self.thread.quit()
-#            self.thread.wait()
-
-#        event.accept()
-#        QCoreApplication.quit()  # Bu satır uygulamayı tamamen kapatır
 

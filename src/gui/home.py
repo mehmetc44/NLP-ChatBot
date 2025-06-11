@@ -87,7 +87,6 @@ class Ui_MainWindow(object):
         self.gridLayout.addWidget(self.chatMode)
         self.comboBox.currentIndexChanged.connect(self.change_mode)
 
-    #self.camera_widget.mic_button.clicked.connect(self.captureSpeechInput)
 
 
     def toCameraMode(self):

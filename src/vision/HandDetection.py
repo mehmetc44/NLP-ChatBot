@@ -17,9 +17,7 @@ class HandGestureRecognizer:
             (0, 0, 0, 0, 0): "Punch",
             (0, 1, 0, 0, 0): "Forward",
             (0, 1, 0, 0, 1): "Rock",
-            (0, 0, 1, 0, 0): "oe",
         }
-
     def process_frame(self, frame):
         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hands.process(frame_rgb)
