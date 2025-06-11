@@ -85,71 +85,35 @@ class Ui_MainWindow(object):
         self.chatMode = ChatWidget()
         self.gridLayout.addWidget(self.camera_widget)
         self.gridLayout.addWidget(self.chatMode)
-        self.chatMode.microphoneButton.clicked.connect(self.captureSpeechInput)
         self.comboBox.currentIndexChanged.connect(self.change_mode)
+
+    #self.camera_widget.mic_button.clicked.connect(self.captureSpeechInput)
+
+
+    def toCameraMode(self):
+        self.chatMode.hide()
+        self.camera_widget.show()
+        self.camera_widget.start_camera()
+
+
+    def toChatMode(self):
+        self.camera_widget.stop_camera()
+        self.camera_widget.hide()
+        self.chatMode.show()
+
 
     def change_mode(self, index):
         if self.comboBox.currentText() == "Camera Mode":
-            self.chatMode.hide()
-            self.camera_widget.show()
-            self.camera_widget.start_camera()
+            self.toCameraMode()
         else:
-            self.camera_widget.stop_camera()
-            self.camera_widget.hide()
-            self.chatMode.show()
+            self.toChatMode()
 
     def closeEvent(self, event):
         self.camera_widget.stop_camera()
         event.accept()
 
 
-    def microphoneActive(self):
-        self.chatMode.microphoneButton.setStyleSheet("""
-                    QPushButton{
-                        padding: 10px;
-                        width: 50px;
-                        border: 0px;
-                        image: url(data/assets/microphone-red.svg); 
-                    }""")
-    def microphoneDisactive(self):
-        self.chatMode.microphoneButton.setStyleSheet("""
-                            QPushButton{
-                                padding: 10px;
-                                width: 50px;
-                                border: 0px;
-                                image: url(data/assets/microphone-primary.svg); 
-                            }
-                            QPushButton:hover{
-                                image: url(data/assets/microphone-secondary.svg); 
-                            }""")
-    def toText(self):
-        text = stt.toText()
-        self.chatMode.inputLine.setText("")
-        self.chatMode.inputLine.setText(text)
 
-    def captureSpeechInput(self):
-        self.microphoneActive()
-        self.thread = QThread()
-        self.worker = SpeechWorker()
-        self.worker.moveToThread(self.thread)
-
-        self.thread.started.connect(self.worker.run)
-        self.worker.finished.connect(self.onSpeechRecognized)
-        self.worker.error.connect(self.onSpeechError)
-        self.worker.finished.connect(self.thread.quit)
-        self.worker.finished.connect(self.worker.deleteLater)
-        self.thread.finished.connect(self.thread.deleteLater)
-
-        self.thread.start()
-
-    def onSpeechRecognized(self, text):
-        self.chatMode.inputLine.setText(text)
-        self.microphoneDisactive()
-
-    def onSpeechError(self, message):
-        print(message)
-        self.chatMode.inputLine.setText("")
-        self.microphoneDisactive()
 
 
 class UI:

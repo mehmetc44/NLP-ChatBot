@@ -1,8 +1,14 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QScrollArea, QVBoxLayout, QLineEdit
+
+from src.stt.SpeechToText import SpeechWorker
+from utils.rasa_client import RasaClient
+from utils.config import *
 from src.gui.styles.colors import Colors
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QThread
 from src.gui.widgets.MessageBoxes import *
+
+
 
 class ChatWidget(QWidget):
     def __init__(self):
@@ -139,20 +145,72 @@ class ChatWidget(QWidget):
 
         self.gridLayout.addWidget(self.frame_2, 1, 0, 1, 1)
 
-        self.sendButton.clicked.connect(self.sendMessage)
-        self.inputLine.returnPressed.connect(self.sendMessage)
+        self.sendButton.clicked.connect(self.converse)
+        self.inputLine.returnPressed.connect(self.converse)
+        self.microphoneButton.clicked.connect(self.captureSpeechInput)
 
-        self.addMessage(ReceiveMessageBox("""Metin nedir kısa tanım? "Metin", Arapçaya mensup bir kelime olup, "mtn" kökünden türemiş, 'yazı parçası, yazıyı oluşturan unsurların her bir bölümü' olarak tanımlanmıştır. Ayrıca Türk Dil Kurumu'na göre "metin" sözcüğü; Bir yazıyı biçim, anlatım ve noktalama özellikleriyle oluşturan kelimelerin bütünü, tekst. Basılı veya el yazması parça."""))
+
+
+
+    def microphoneActive(self):
+        self.microphoneButton.setStyleSheet("""
+                    QPushButton{
+                        padding: 10px;
+                        width: 50px;
+                        border: 0px;
+                        image: url(data/assets/microphone-red.svg); 
+                    }""")
+    def microphoneDisactive(self):
+        self.microphoneButton.setStyleSheet("""
+                            QPushButton{
+                                padding: 10px;
+                                width: 50px;
+                                border: 0px;
+                                image: url(data/assets/microphone-primary.svg); 
+                            }
+                            QPushButton:hover{
+                                image: url(data/assets/microphone-secondary.svg); 
+                            }""")
+
+
+    def captureSpeechInput(self):
+        self.microphoneActive()
+        self.thread = QThread()
+        self.worker = SpeechWorker()
+        self.worker.moveToThread(self.thread)
+        self.thread.started.connect(self.worker.run)
+        self.worker.finished.connect(self.onSpeechRecognized)
+        self.worker.error.connect(self.onSpeechError)
+        self.worker.finished.connect(self.thread.quit)
+        self.worker.finished.connect(self.worker.deleteLater)
+        self.thread.finished.connect(self.thread.deleteLater)
+        self.thread.start()
+
+    def onSpeechRecognized(self, text):
+        self.inputLine.setText(text)
+        self.microphoneDisactive()
+
+    def onSpeechError(self, message):
+        print(message)
+        self.inputLine.setText("")
+        self.microphoneDisactive()
+
 
     def addMessage(self, msg_box):
         self.scrollLayout.addWidget(msg_box)
         QtCore.QTimer.singleShot(50, lambda: self.scrollArea.verticalScrollBar().setValue(
-            self.scrollArea.verticalScrollBar().maximum()))
+        self.scrollArea.verticalScrollBar().maximum()))
 
-    def sendMessage(self):
+    def sendMessage(self,sender):
         text = self.inputLine.text().strip()
         if text:
             self.inputLine.clear()
-            self.addMessage(SendMessageBox(text))
+            self.addMessage(MessageBox(text,sender))
 
+    def converse(self):
+        message = self.inputLine.text()
+        self.inputLine.clear()
+        self.addMessage(MessageBox(message,SENDER_USER))
+        result = RasaClient().send_test_message()
+        self.addMessage(MessageBox(result,SENDER_BOT))
 
